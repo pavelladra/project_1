@@ -36,57 +36,66 @@ users = {'bob': '123', 'ann': 'pass123', 'mike': 'password123', 'liz': 'pass123'
 
 username = input('username:')
 password = input('password:')
-print('----------------------------------------')
+print('-' * 40)
+
 if username in users and users[username] == password:
     print(f'Welcome to the app, {username}\nWe have 3 texts to be analyzed.')
 else:
     print('unregistered user, terminating the program..')
     exit()
-print('----------------------------------------')
-selection = int(input('Enter a number btw. 1 and 3 to select:'))
-interpunkce = """,.!?/()}[{]><:'";"""
-if selection in range(1,4):
-    text_without = TEXTS[selection-1].translate(str.maketrans("","", interpunkce))
+print('-' * 40)
+
+selection = input('Enter a number btw. 1 and 3 to select:')
+punct = """,.!?/()}[{]><:'";#$%&+_="""
+
+if selection.isdigit(): 
+    if int(selection) in range(1,4):
+        text_without_punct = TEXTS[int(selection)-1].translate(str.maketrans("","", punct))
+    else:
+        print('number is out of range, terminating the program..')
+        exit()
 else:
     print('incorrect input, terminating the program..')
     exit()
-print('----------------------------------------')
+print('-' * 40)
 
-slova = text_without.split()
-pocet_slov = 0
+words = text_without_punct.split()
+total_words = len(words)
 titlecase_count = 0
 uppercase_count = 0
 lowercase_count = 0
 numeric_string_count = 0
-sum_num = 0
-for slovo in slova:
-    pocet_slov += 1
-    if slovo.isdigit():
+num_sum = 0
+
+for word in words:
+    if word.isdigit():
         numeric_string_count += 1
-        cislo = int(slovo)
-        sum_num = cislo + sum_num
-    elif slovo.isupper():
+        num_sum = int(word) + num_sum
+    elif word.isupper():
         uppercase_count += 1
-    elif slovo.islower():
+    elif word.islower():
         lowercase_count += 1
-    elif slovo.istitle():
+    elif word.istitle():
         titlecase_count += 1
-print(f'There are {pocet_slov} words in the selected text.')
+
+print(f'There are {total_words} words in the selected text.')
 print(f'There are {titlecase_count} titlecase words.')
 print(f'There are {uppercase_count} uppercase words.')
 print(f'There are {lowercase_count} lowercase words.')
 print(f'There are {numeric_string_count} numeric strings.')
-print(f'The sum of all the numbers {sum_num}')
+print(f'The sum of all the numbers {num_sum}')
 
-velikost = []
-for slovo in slova:
-    velikost.append(len(slovo))
-maximum = max(velikost)
+word_lengths = [len(word) for word in words]
+max_length = max(word_lengths)
 
-print(f'''----------------------------------------
-LEN|  OCCURENCES{'|NR'.rjust(maximum)}
-----------------------------------------''')
+print(
+    f'''{'-' * 40}
+LEN|  OCCURENCES{'|NR'.rjust(max_length)}
+{'-' * 40}'''
+)
 
-for hodnota in range(1, maximum + 1):
-    pocet_slov_s_velikost =  velikost.count(hodnota)
-    print(f'{hodnota:3d}|{pocet_slov_s_velikost * '*'}{'|'.rjust(maximum-pocet_slov_s_velikost+10)}{pocet_slov_s_velikost}')
+for length in range(1, max_length + 1):
+    count =  word_lengths.count(length)
+    print(
+        f'{length:3d}|{'*' * count}{'|'.rjust(max_length-count + 10)}{count}'
+    )
