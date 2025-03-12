@@ -50,7 +50,7 @@ punct = """,.!?/()}[{]><:'";#$%&+_="""
 
 if selection.isdigit(): 
     if int(selection) in range(1,4):
-        text_without_punct = TEXTS[int(selection)-1].translate(str.maketrans("","", punct))
+        clean_text = TEXTS[int(selection)-1].translate(str.maketrans("","", punct))
     else:
         print('number is out of range, terminating the program..')
         exit()
@@ -59,7 +59,7 @@ else:
     exit()
 print('-' * 40)
 
-words = text_without_punct.split()
+words = clean_text.split()
 total_words = len(words)
 titlecase_count = 0
 uppercase_count = 0
@@ -96,6 +96,4 @@ LEN|  OCCURENCES{'|NR'.rjust(max_length)}
 
 for length in range(1, max_length + 1):
     count =  word_lengths.count(length)
-    print(
-        f'{length:3d}|{'*' * count}{'|'.rjust(max_length-count + 10)}{count}'
-    )
+    print(f'{length:3d}|{'*' * count}{'|'.rjust(max_length-count + 10)}{count}')
